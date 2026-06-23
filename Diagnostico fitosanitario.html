@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+  <style>
+    body { margin: 0; }
+    #map { width: 100vw; height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiaGVybW9zaWxsYWpmY28iLCJhIjoiY21wZWEwM3dpMDIyeDJxcTI0eW81b3hvZSJ9.rs_vrryA0ttIpl4GBhBlHA';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/hermosillajfco/cmqpojnf9001i01rxcopqehok',
+      center: [-70.612891, -33.420159],
+      zoom: 18
+    });
+
+map.on('click', 'data-driven-circles', function(e) {
+  const p = e.features[0].properties;
+  
+  const contenido = `
+    <table>
+      <tr><td><b>Especie</b></td><td>${p['NOMBRE_ESPECIE']}</td></tr>
+      <tr><td><b>Altura</b></td><td>${p['ALTURA']} m</td></tr>
+      <tr><td><b>Árbol sano</b></td><td>${p['ARBOL SANO'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Taza vacía</b></td><td>${p['TAZA VACÍA'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Oquedades</b></td><td>${p['OQUEDADES'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Árbol sano</b></td><td>${p['ARBOL SANO'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Pudrición en base</b></td><td>${p['Pudrición en la base del árbol'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Daño importante en corteza</b></td><td>${p['Daño importante en corteza'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Desganches</b></td><td>${p['Desganches y pérdida de secciones de la copa'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Podas de diámetros grande</b></td><td>${p['Podas de diámetros grande'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Topping</b></td><td>${p['Topping'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Heridas de poda sin cicatrizar</b></td><td>${p['Heridas de poda sin cicatrizar'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Corteza humedecida (signo de pudrición interior)</b></td><td>${p['Corteza humedecida (signo de pudrición interior)'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Desprendimiento progresivo de corteza</b></td><td>${p['Desprendimiento progresivo de corteza'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Problema fitosanitario en follaje (clorosis, presencia de daño evidente)</b></td><td>${p['Problema fitosanitario en follaje (clorosis, presencia de daño evidente)'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Raíces sobresalientes y/o daño al pavimento</b></td><td>${p['Raíces sobresalientes y/o daño al pavimento'] ? 'Sí' : 'No'}</td></tr>
+      <tr><td><b>Daño en raíces</b></td><td>${p['Daño en raíces'] ? 'Sí' : 'No'}</td></tr>
+    </table>
+  `;
+  
+  new mapboxgl.Popup()
+    .setLngLat(e.lngLat)
+    .setHTML(contenido)
+    .addTo(map);
+});
+
+map.on('mouseenter', 'data-driven-circles', () => {
+  map.getCanvas().style.cursor = 'pointer';
+});
+map.on('mouseleave', 'data-driven-circles', () => {
+  map.getCanvas().style.cursor = '';
+});
+  </script>
+</body>
+</html>
